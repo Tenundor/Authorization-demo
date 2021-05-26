@@ -7,4 +7,6 @@ app = FastAPI()
 
 @app.get('/')
 def index_page():
-    return Response('Привет!!!', media_type='text/html')
+    with open('templates/login.html', 'r') as f:
+        login_page = f.read()
+    return Response(login_page, media_type='text/html')
