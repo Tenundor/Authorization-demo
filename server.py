@@ -31,7 +31,7 @@ def sign_data(data: str) -> str:
 
 def get_username_from_signed_string(username_signed: str) -> Optional[str]:
     username_base64, sign = username_signed.split('.')
-    username = base64.b16decode(username_base64.encode()).decode()
+    username = base64.b64decode(username_base64.encode()).decode()
     valid_sign = sign_data(username)
     if hmac.compare_digest(valid_sign, sign):
         return username
@@ -41,15 +41,20 @@ def get_username_from_signed_string(username_signed: str) -> Optional[str]:
 def index_page(username: Optional[str] = Cookie(default=None)):
     with open('templates/login.html', 'r') as f:
         login_page = f.read()
-    if username:
-        try:
-            user = users[username]
-        except KeyError:
-            response = Response(login_page, media_type='text/html')
-            response.delete_cookie(key='username')
-            return response
-        return Response(f"Привет, {user['name']}", media_type='text/html')
-    return Response(login_page, media_type='text/html')
+    if not username:
+        return Response(login_page, media_type='text/html')
+    valid_username = get_username_from_signed_string(username)
+    if not valid_username:
+        response = Response(login_page, media_type='text/html')
+        response.delete_cookie(key='username')
+        return response
+    try:
+        user = users[valid_username]
+    except KeyError:
+        response = Response(login_page, media_type='text/html')
+        response.delete_cookie(key='username')
+        return response
+    return Response(f"Привет, {user['name']}", media_type='text/html')
 
 
 @app.post('/login')
