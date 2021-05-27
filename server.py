@@ -29,6 +29,14 @@ def sign_data(data: str) -> str:
     ).hexdigest().upper()
 
 
+def get_username_from_signed_string(username_signed: str) -> Optional[str]:
+    username_base64, sign = username_signed.split('.')
+    username = base64.b16decode(username_base64.encode()).decode()
+    valid_sign = sign_data(username)
+    if hmac.compare_digest(valid_sign, sign):
+        return username
+
+
 @app.get('/')
 def index_page(username: Optional[str] = Cookie(default=None)):
     with open('templates/login.html', 'r') as f:
