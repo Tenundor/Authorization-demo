@@ -35,6 +35,20 @@
         }
 
     </style>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function (){
+            let btn = document.querySelector('input[type=submit]');
+            btn.addEventListener("click", async function (event){
+                event.preventDefault();
+                let response = await fetch("/login", {
+                    method: "POST",
+                    body: new FormData(document.querySelector("form"))
+                });
+                let response_text = await response.text();
+                console.log(response_text);
+            })
+        })
+    </script>
 </head>
 <body>
 
