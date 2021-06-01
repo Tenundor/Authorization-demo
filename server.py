@@ -26,6 +26,13 @@ users = {
 }
 
 
+def verify_password(password: str, password_hash: str) -> bool:
+    return hmac.compare_digest(
+        hashlib.sha256((password + PASSWORD_SALT).encode()).hexdigest(),
+        password_hash
+    )
+
+
 def sign_data(data: str) -> str:
     """Возвращает подписанные данные"""
     return hmac.new(
