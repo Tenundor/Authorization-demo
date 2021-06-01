@@ -16,6 +16,11 @@ users = {
         'password': '12345',
         'name': 'Антон',
         'balance': 10_000,
+    },
+    'ivan@ivan.com': {
+        'password': '12345',
+        'name': 'Иван',
+        'balance': 5_000,
     }
 }
 
