@@ -10,15 +10,16 @@ from fastapi.responses import Response
 app = FastAPI()
 
 SECRET_KEY = '9627fc5c05204e648873b4c476c6c1aa4cf3a1e40cb8b1a405dccfedfd5c7963'
+PASSWORD_SALT = '71bffd706e8079620a190837f96944c690d10ee58d23f50f6af5cec480414630'
 
 users = {
     'tenundor@gmail.com': {
-        'password': '12345',
+        'password': '20120cc9df1494a7ddc35618dc2119e3809b92be6f1702d3dbdc034642e49c05',
         'name': 'Антон',
         'balance': 10_000,
     },
     'ivan@ivan.com': {
-        'password': '12345',
+        'password': 'ce31c2cc36ebc048116973a6b50ad83b08512d6b8a1f870c0ed780137f210bdf',
         'name': 'Иван',
         'balance': 5_000,
     }
