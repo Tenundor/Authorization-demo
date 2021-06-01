@@ -73,7 +73,7 @@ def index_page(username: Optional[str] = Cookie(default=None)):
 @app.post('/login')
 def process_login_page(username: str = Form(...), password: str = Form(...)):
     user = users.get(username)
-    if not user or user['password'] != password:
+    if not user or not verify_password(password, user['password']):
         return Response('Я вас не знаю!', media_type='text/html')
     response = Response(
         f"Ваш логин: {username}<br />баланс: {user['balance']} руб.", media_type='text/html'
