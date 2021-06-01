@@ -44,8 +44,13 @@
                     method: "POST",
                     body: new FormData(document.querySelector("form"))
                 });
-                let response_text = await response.text();
-                console.log(response_text);
+                let response_json = await response.json();
+                if (response_json.success){
+                    let body = document.querySelector('body');
+                    body.style.backgroundColor = "white";
+                    body.style.display = "block";
+                    body.innerHTML = response_json.message;
+                }
             })
         })
     </script>
