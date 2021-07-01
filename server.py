@@ -6,6 +6,11 @@ from typing import Optional
 
 from fastapi import FastAPI, Form, Cookie
 from fastapi.responses import Response
+from pydantic import BaseModel
+
+
+class Phone(BaseModel):
+    phone: str
 
 
 app = FastAPI()
@@ -51,6 +56,25 @@ def get_username_from_signed_string(username_signed: str) -> Optional[str]:
         return username
 
 
+def standardize_phone(raw_phone: str) -> str:
+    cleared_full_phone = ''
+
+    for symbol in raw_phone:
+        if symbol.isnumeric():
+            cleared_full_phone += symbol
+
+    code_start_index = cleared_full_phone.find('9', 0, 2)
+
+    if code_start_index == -1:
+        return cleared_full_phone
+
+    code_length = 3
+    phone_code = cleared_full_phone[code_start_index:code_start_index + code_length]
+    phone = cleared_full_phone[code_start_index + code_length:]
+
+    return f'8 ({phone_code}) {phone[:3]}-{phone[3:5]}-{phone[5:]}'
+
+
 @app.get('/')
 def index_page(username: Optional[str] = Cookie(default=None)):
     with open('templates/login.html', 'r') as f:
@@ -93,3 +117,8 @@ def process_login_page(username: str = Form(...), password: str = Form(...)):
         sign_data(username)
     response.set_cookie(key='username', value=username_signed)
     return response
+
+
+@app.post('/unify_phone_from_json')
+def unify_phone_page(phone: Phone):
+    return standardize_phone(phone.phone)
