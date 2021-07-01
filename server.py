@@ -121,4 +121,5 @@ def process_login_page(username: str = Form(...), password: str = Form(...)):
 
 @app.post('/unify_phone_from_json')
 def unify_phone_page(phone: Phone):
-    return standardize_phone(phone.phone)
+    return Response(standardize_phone(phone.phone), media_type='text/html')
+
