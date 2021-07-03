@@ -128,3 +128,9 @@ def unify_phone_page(phone: Phone):
 def unify_phone_from_form_page(phone: str = Form(...)):
     return Response(standardize_phone(phone), media_type='text/html')
 
+
+@app.get('/unify_phone_from_query')
+def unify_phone_from_query_page(phone: str):
+    return Response(standardize_phone(phone), media_type='text/html')
+
+
