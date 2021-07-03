@@ -123,3 +123,8 @@ def process_login_page(username: str = Form(...), password: str = Form(...)):
 def unify_phone_page(phone: Phone):
     return Response(standardize_phone(phone.phone), media_type='text/html')
 
+
+@app.post('/unify_phone_from_form')
+def unify_phone_from_form_page(phone: str = Form(...)):
+    return Response(standardize_phone(phone), media_type='text/html')
+
