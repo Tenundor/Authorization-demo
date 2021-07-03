@@ -134,3 +134,7 @@ def unify_phone_from_query_page(phone: str):
     return Response(standardize_phone(phone), media_type='text/html')
 
 
+@app.get('/unify_phone_from_cookies')
+def unify_phone_from_cookies_page(phone: str = Cookie(default=None)):
+    return Response(standardize_phone(phone), media_type='text/html')
+
